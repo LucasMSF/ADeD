@@ -12,7 +12,7 @@ public class CharacterService {
     private final CharacterRepository characterRepository;
 
     private void checkIfExistsById(Long id) throws ResourceNotFoundException {
-        if (this.characterRepository.existsById(id)) {
+        if (!this.characterRepository.existsById(id)) {
             throw new ResourceNotFoundException();
         }
     }

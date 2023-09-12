@@ -19,7 +19,6 @@ import java.util.List;
 @Tag(name = "Characters", description = "Manage the characters")
 public class CharacterController {
     private final CharacterService characterService;
-
     private final ModelMapper modelMapper;
 
     @GetMapping
@@ -89,6 +88,7 @@ public class CharacterController {
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Delete character by ID")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        this.characterService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
