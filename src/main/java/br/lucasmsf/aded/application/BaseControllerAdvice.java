@@ -34,4 +34,11 @@ public class BaseControllerAdvice {
 
         return new ResponseEntity<>(fieldErrorResponseList, HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<MessageResponse> handleException(Exception ex) {
+        var messageResponse = new MessageResponse();
+        messageResponse.setMessage(ex.getMessage());
+        return new ResponseEntity<>(messageResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
