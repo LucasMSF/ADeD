@@ -22,8 +22,9 @@ public class HistoryService {
     private final HistoryRepository historyRepository;
     private final HistoryTurnService historyTurnService;
     private final GameService gameService;
-
     private final List<StartGameStrategy> startGameStrategyList;
+
+    private static final int START_GAME_DICE_FACES = 20;
 
     @Transactional
     public History create(
@@ -70,8 +71,8 @@ public class HistoryService {
         int playerRoll, cpuRoll;
 
         do {
-            playerRoll = Dice.roll(20);
-            cpuRoll = Dice.roll(20);
+            playerRoll = Dice.roll(START_GAME_DICE_FACES);
+            cpuRoll = Dice.roll(START_GAME_DICE_FACES);
         } while (playerRoll == cpuRoll);
 
         var startCharacter = playerRoll > cpuRoll
