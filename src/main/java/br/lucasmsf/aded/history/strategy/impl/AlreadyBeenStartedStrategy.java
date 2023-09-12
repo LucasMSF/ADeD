@@ -1,14 +1,15 @@
-package br.lucasmsf.aded.history.strategy;
+package br.lucasmsf.aded.history.strategy.impl;
 
 import br.lucasmsf.aded.game.Game;
 import br.lucasmsf.aded.history.exception.GameAlreadyBeenStartedException;
 import br.lucasmsf.aded.history.repository.HistoryRepository;
+import br.lucasmsf.aded.history.strategy.StartGameStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class AlreadyBeenStartedStrategy implements  StartGameStrategy{
+public class AlreadyBeenStartedStrategy implements StartGameStrategy {
     private final HistoryRepository historyRepository;
 
     @Override
