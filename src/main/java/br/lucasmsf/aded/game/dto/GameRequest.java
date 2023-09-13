@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class GameRequest {
     @NotNull
+    private String playerName;
+    @NotNull
     private Long playerCharacterId;
     private Long cpuCharacterId;
 }

@@ -1,4 +1,4 @@
-package br.lucasmsf.aded.game.util;
+package br.lucasmsf.aded.application.util;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -3,6 +3,9 @@ package br.lucasmsf.aded.game;
 import br.lucasmsf.aded.game.dto.GameRequest;
 import br.lucasmsf.aded.game.dto.GameResponse;
 import br.lucasmsf.aded.game.dto.GameTurnStartResponse;
+import br.lucasmsf.aded.game.dto.TurnActionResponse;
+import br.lucasmsf.aded.history.entity.HistoryTurn;
+import br.lucasmsf.aded.history.enumerable.TurnAction;
 import br.lucasmsf.aded.history.service.HistoryService;
 import br.lucasmsf.aded.history.service.HistoryTurnService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +33,7 @@ public class GameController {
             @RequestBody @Valid GameRequest gameRequest
     ) {
         var game = this.gameService.create(
+                gameRequest.getPlayerName(),
                 gameRequest.getPlayerCharacterId(),
                 gameRequest.getCpuCharacterId()
         );
@@ -41,7 +45,7 @@ public class GameController {
 
     @PostMapping(value = "/{id}/start")
     @Operation(summary = "Start a created game")
-    public ResponseEntity<GameTurnStartResponse> create(
+    public ResponseEntity<GameTurnStartResponse> startGame(
             @PathVariable Long id
     ) {
         var history = this.historyService.startGame(id);
@@ -51,6 +55,29 @@ public class GameController {
             setDefend(historyTurn.getDefenderCharacter().getName());
         }};
         return new ResponseEntity<>(gameTurnStartResponse, HttpStatus.OK);
+    }
+
+    private ResponseEntity<TurnActionResponse> turnAction(HistoryTurn historyTurn) {
+        var turnActionResponse = this.modelMapper.map(historyTurn, TurnActionResponse.class);
+        return new ResponseEntity<>(turnActionResponse, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{id}/attack")
+    @Operation(summary = "Attack on current turn")
+    public ResponseEntity<TurnActionResponse> attack(
+            @PathVariable Long id
+    ) {
+        var historyTurn = this.historyTurnService.startTurn(id, TurnAction.ATTACK);
+        return this.turnAction(historyTurn);
+    }
+
+    @PostMapping(value = "/{id}/defense")
+    @Operation(summary = "Defense on current turn")
+    public ResponseEntity<TurnActionResponse> defense(
+            @PathVariable Long id
+    ) {
+        var historyTurn = this.historyTurnService.startTurn(id, TurnAction.DEFENSE);
+        return this.turnAction(historyTurn);
     }
 
 }

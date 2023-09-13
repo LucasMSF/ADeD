@@ -1,18 +1,12 @@
 package br.lucasmsf.aded.game;
 
 import br.lucasmsf.aded.application.exception.ResourceNotFoundException;
-import br.lucasmsf.aded.character.Character;
 import br.lucasmsf.aded.character.CharacterService;
 import br.lucasmsf.aded.game.strategy.CreateGameStrategy;
-import br.lucasmsf.aded.game.util.Dice;
-import br.lucasmsf.aded.history.service.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -31,8 +25,9 @@ public class GameService {
         return this.gameRepository.save(game);
     }
 
-    public Game create(Long playerCharacterId, Long cpuCharacterId) {
+    public Game create(String playerName, Long playerCharacterId, Long cpuCharacterId) {
         var game = new Game();
+        game.setPlayerName(playerName);
         game.setPlayerCharacter(this.characterService.find(playerCharacterId));
 
         if (cpuCharacterId != null) {
@@ -42,6 +37,10 @@ public class GameService {
         this.createGameStrategyList.forEach(createGameValidation -> createGameValidation.execute(game));
 
         return this.create(game);
+    }
+
+    public Game create(Long playerCharacterId, Long cpuCharacterId) {
+        return this.create("Anonymous", playerCharacterId, cpuCharacterId);
     }
 
 }

@@ -3,7 +3,7 @@ package br.lucasmsf.aded.history.service;
 import br.lucasmsf.aded.character.Character;
 import br.lucasmsf.aded.game.Game;
 import br.lucasmsf.aded.game.GameService;
-import br.lucasmsf.aded.game.util.Dice;
+import br.lucasmsf.aded.application.util.Dice;
 import br.lucasmsf.aded.history.entity.History;
 import br.lucasmsf.aded.history.repository.HistoryRepository;
 import br.lucasmsf.aded.history.strategy.StartGameStrategy;

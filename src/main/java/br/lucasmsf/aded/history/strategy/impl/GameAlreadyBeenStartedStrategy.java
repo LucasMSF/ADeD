@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class AlreadyBeenStartedStrategy implements StartGameStrategy {
+public class GameAlreadyBeenStartedStrategy implements StartGameStrategy {
     private final HistoryRepository historyRepository;
 
     @Override

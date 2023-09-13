@@ -12,10 +12,12 @@ import java.util.List;
 public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper(
-            List<PropertyMap<?, ?>> propertyMapList
+            List<PropertyMap<?, ?>> propertyMapList,
+            List<Converter<?, ?>> converterList
     ) {
         var modelMapper = new ModelMapper();
         propertyMapList.forEach(modelMapper::addMappings);
+        converterList.forEach(modelMapper::addConverter);
         return modelMapper;
     }
 

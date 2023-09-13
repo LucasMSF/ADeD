@@ -17,6 +17,7 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String playerName;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Character playerCharacter;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
