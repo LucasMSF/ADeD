@@ -11,7 +11,7 @@ O seu oponente sempre será um monstro (CPU), você pode escolher ou deixar alea
 
 ## 🔌 Como Executar o Projeto
 
-Antes de começar, certifique-se de ter um ambiente com JDK 17 instalado 
+Antes de começar, certifique-se de ter um ambiente com JDK 17 e Docker/Docker-Compose instalado 
 
 Para executar o projeto, siga os seguintes passos:
 
