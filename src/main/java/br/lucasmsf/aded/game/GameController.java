@@ -1,9 +1,7 @@
 package br.lucasmsf.aded.game;
 
-import br.lucasmsf.aded.game.dto.GameRequest;
-import br.lucasmsf.aded.game.dto.GameResponse;
-import br.lucasmsf.aded.game.dto.GameTurnStartResponse;
-import br.lucasmsf.aded.game.dto.TurnActionResponse;
+import br.lucasmsf.aded.game.dto.*;
+import br.lucasmsf.aded.history.dto.HistoryResponse;
 import br.lucasmsf.aded.history.entity.HistoryTurn;
 import br.lucasmsf.aded.history.enumerable.TurnAction;
 import br.lucasmsf.aded.history.service.HistoryService;
@@ -51,8 +49,8 @@ public class GameController {
         var history = this.historyService.startGame(id);
         var historyTurn = this.historyTurnService.getCurrentTurn(history);
         var gameTurnStartResponse = new GameTurnStartResponse(){{
-            setAttack(historyTurn.getAttackingCharacter().getName());
-            setDefend(historyTurn.getDefenderCharacter().getName());
+            setAttacker(historyTurn.getAttackingCharacter().getName());
+            setDefender(historyTurn.getDefenderCharacter().getName());
         }};
         return new ResponseEntity<>(gameTurnStartResponse, HttpStatus.OK);
     }
@@ -78,6 +76,24 @@ public class GameController {
     ) {
         var historyTurn = this.historyTurnService.startTurn(id, TurnAction.DEFENSE);
         return this.turnAction(historyTurn);
+    }
+
+    @PostMapping(value = "/{id}/damage")
+    @Operation(summary = "Calculate damage on current turn")
+    public ResponseEntity<CalculateDamageResponse> damage(
+            @PathVariable Long id
+    ) {
+        var historyTurn = this.historyTurnService.calculateDamage(id);
+        var calculateDamageResponse = this.modelMapper.map(historyTurn, CalculateDamageResponse.class);
+        return new ResponseEntity<>(calculateDamageResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}/history")
+    @Operation(summary = "Get game history")
+    public ResponseEntity<HistoryResponse> history(@PathVariable Long id) {
+        var history = this.historyService.findByGameId(id);
+        var historyResponse = this.modelMapper.map(history, HistoryResponse.class);
+        return new ResponseEntity<>(historyResponse, HttpStatus.OK);
     }
 
 }

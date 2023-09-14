@@ -1,5 +1,6 @@
 package br.lucasmsf.aded.history.service;
 
+import br.lucasmsf.aded.application.exception.ResourceNotFoundException;
 import br.lucasmsf.aded.character.Character;
 import br.lucasmsf.aded.game.Game;
 import br.lucasmsf.aded.game.GameService;
@@ -11,10 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +23,19 @@ public class HistoryService {
     private final List<StartGameStrategy> startGameStrategyList;
 
     private static final int START_GAME_DICE_FACES = 20;
+
+    public List<History> findAll() {
+        return this.historyRepository.findAll();
+    }
+
+    public History findByGameId(Long gameId) {
+        var history = this.historyRepository.findByGameId(gameId)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        Collections.sort(history.getTurns());
+
+        return history;
+    }
 
     @Transactional
     public History create(
@@ -43,13 +54,6 @@ public class HistoryService {
         );
 
         return historyTurn.getHistory();
-    }
-
-    private int rollForCharacter(Character character) {
-        return Dice.roll(
-                character.getFacesOfTheDice(),
-                character.getFacesOfTheDice()
-        );
     }
 
     private Map<String, Character> getAttackAndDefense(Game game, Character attackCharacter) {

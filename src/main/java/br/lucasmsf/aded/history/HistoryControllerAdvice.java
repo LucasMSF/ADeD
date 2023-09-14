@@ -2,10 +2,7 @@ package br.lucasmsf.aded.history;
 
 import br.lucasmsf.aded.application.dto.MessageResponse;
 import br.lucasmsf.aded.application.exception.BaseException;
-import br.lucasmsf.aded.history.exception.GameAlreadyBeenStartedException;
-import br.lucasmsf.aded.history.exception.GameNotStartedException;
-import br.lucasmsf.aded.history.exception.IncorrectTurnActionException;
-import br.lucasmsf.aded.history.exception.TurnAlreadyBeenStartedException;
+import br.lucasmsf.aded.history.exception.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -20,7 +17,8 @@ public class HistoryControllerAdvice {
             GameAlreadyBeenStartedException.class,
             GameNotStartedException.class,
             TurnAlreadyBeenStartedException.class,
-            IncorrectTurnActionException.class
+            IncorrectTurnActionException.class,
+            HasNoDamageException.class
     })
     public ResponseEntity<MessageResponse>
     handleBaseException(BaseException ex) {

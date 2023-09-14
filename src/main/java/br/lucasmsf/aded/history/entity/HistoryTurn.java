@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class HistoryTurn {
+public class HistoryTurn implements Comparable<HistoryTurn> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,4 +25,9 @@ public class HistoryTurn {
     private Integer attack;
     private Integer defense;
     private Integer damage;
+
+    @Override
+    public int compareTo(HistoryTurn o) {
+        return this.id.compareTo(o.id);
+    }
 }

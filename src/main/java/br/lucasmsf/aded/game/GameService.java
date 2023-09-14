@@ -1,12 +1,15 @@
 package br.lucasmsf.aded.game;
 
 import br.lucasmsf.aded.application.exception.ResourceNotFoundException;
+import br.lucasmsf.aded.character.Character;
 import br.lucasmsf.aded.character.CharacterService;
+import br.lucasmsf.aded.game.enumerable.GamePlayerType;
 import br.lucasmsf.aded.game.strategy.CreateGameStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -41,6 +44,36 @@ public class GameService {
 
     public Game create(Long playerCharacterId, Long cpuCharacterId) {
         return this.create("Anonymous", playerCharacterId, cpuCharacterId);
+    }
+
+    private GamePlayerType attackerPlayerType(Game game, Character character) {
+        if (Objects.equals(character.getId(), game.getPlayerCharacter().getId())) {
+            return GamePlayerType.PLAYER;
+        } else {
+            return GamePlayerType.CPU;
+        }
+    }
+
+    private int savePlayerRemaining(Game game, int damage, GamePlayerType attackerPlayerType) {
+        return switch (attackerPlayerType) {
+            case PLAYER -> {
+                var hp = game.getCpuHp() - damage;
+                game.setCpuHp(hp);
+                this.gameRepository.save(game);
+                yield hp;
+            }
+            case CPU -> {
+                var hp = game.getPlayerHp() - damage;
+                game.setPlayerHp(hp);
+                this.gameRepository.save(game);
+                yield hp;
+            }
+        };
+    }
+
+    public int applyDamage(Game game, Character character, int damage) {
+        var playerType = this.attackerPlayerType(game, character);
+        return this.savePlayerRemaining(game, damage, playerType);
     }
 
 }
