@@ -2,14 +2,12 @@ package br.lucasmsf.aded.application.util;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 public class Dice {
-    private static final Random random = new Random();
-
     public static int roll(int faces) {
-        var value = random.nextInt(faces - 1) + 1;
+        var value = ThreadLocalRandom.current().nextInt(1, faces + 1) ;
 
         log.info(String.format("Dice Roll - Faces: %d Value: %d", faces, value));
         return value;

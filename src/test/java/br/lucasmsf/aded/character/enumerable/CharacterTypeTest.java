@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class CharacterTypeTest {
     @Test
     void doesCharacterTypeHaveTypesRequired() {
-        CharacterType c = CharacterType.HERO;
         assertAll("Does it have all types required",
                 () -> assertEquals("HERO", CharacterType.HERO.name()),
                 () -> assertEquals("MONSTER", CharacterType.MONSTER.name())
